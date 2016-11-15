@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using ThinkGeo.MapSuite.Layers;
 using ThinkGeo.MapSuite.WinForms;
+using System.IO;
 
 namespace ThinkGeo.MapSuite.Samples
 {
@@ -18,7 +19,11 @@ namespace ThinkGeo.MapSuite.Samples
 
             LayerOverlay overlay = new LayerOverlay();
 
-            EcwRasterLayer ecwRasterLayer = new EcwRasterLayer("../../App_Data/World.ecw");
+			//To resolve issue that we cannot run the executable by double click it on linux, we need to find out the absolute path by reflection.
+			string baseDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+			string ecwLayerFileName = Path.GetFullPath (Path.Combine (baseDirectory, "../../App_Data/World.ecw"));
+
+			EcwRasterLayer ecwRasterLayer = new EcwRasterLayer(ecwLayerFileName);
             overlay.Layers.Add(ecwRasterLayer);
 
             winformsMap1.Overlays.Add(overlay);
